@@ -1,99 +1,116 @@
 <template>
-  <v-card class="mt-6 py-3">
-    <form @submit.prevent="submitHandler">
-      <div class="px-8">
-        <v-row>
-          <v-col cols="12">
-            <h4 class="page-title">Edit Orders</h4>
-          </v-col>
+    <v-card class="mt-6 py-3">
+       <form @submit.prevent="submitHandler">
+         <div class="px-8">
+           <v-row>
+           <v-col cols="12">
+               <h4 class="page-title">Edit Orders</h4>
+           </v-col>
 
-          <v-col cols="3" class="d-flex align-center">
-            <p class="fs-normal greyBold--text mb-0">Order Date</p>
-          </v-col>
-          <v-col cols="9">
-            <v-datetime-picker
-              label="Order Date"
-              v-model="currentOrderDate"
-            ></v-datetime-picker>
-          </v-col>
+           <v-col cols="3" class="d-flex align-center">
+               <p class="fs-normal greyBold--text mb-0">Order Date</p>
+           </v-col>
+           <v-col cols="9">
+               <v-datetime-picker label="Order Date" v-model="currentOrderDate"></v-datetime-picker>
+           </v-col>
 
-          <v-col cols="3" class="d-flex align-center">
-            <p class="fs-normal greyBold--text mb-0">Product</p>
-          </v-col>
-          <v-col cols="9">
-            <v-autocomplete
-              v-model="product"
-              :items="optionsProduct.map((item) => item.label)"
-              :search-input.sync="searchModelProduct"
-              label="Product"
-            >
-            </v-autocomplete>
-          </v-col>
+           <v-col cols="3" class="d-flex align-center">
+               <p class="fs-normal greyBold--text mb-0">Product</p>
+           </v-col>
+           <v-col cols="9">
+               <v-autocomplete
+                   v-model="product"
+                   :items="optionsProduct.map(item => item.label)"
+                   :search-input.sync="searchModelProduct"
+                   label="Product"
+               >
+               </v-autocomplete>
+           </v-col>
 
-          <v-col cols="3" class="d-flex align-center">
-            <p class="fs-normal greyBold--text mb-0">User</p>
-          </v-col>
-          <v-col cols="9">
-            <v-autocomplete
-              v-model="user"
-              :items="optionsUser.map((item) => item.label)"
-              :search-input.sync="searchModelUser"
-              label="User"
-            >
-            </v-autocomplete>
-          </v-col>
+           <v-col cols="3" class="d-flex align-center">
+               <p class="fs-normal greyBold--text mb-0">User</p>
+           </v-col>
+           <v-col cols="9">
+               <v-autocomplete
+                   v-model="user"
+                   :items="optionsUser.map(item => item.label)"
+                   :search-input.sync="searchModelUser"
+                   label="User"
+               >
+               </v-autocomplete>
+           </v-col>
 
-          <v-col cols="3" class="d-flex align-center">
-            <p class="fs-normal greyBold--text mb-0">Amount</p>
-          </v-col>
-          <v-col cols="9">
-            <v-text-field
-              type="number"
-              label="Amount"
-              v-model.number="amount"
-            ></v-text-field>
-          </v-col>
+           <v-col cols="3" class="d-flex align-center">
+             <p class="fs-normal greyBold--text mb-0">Amount</p>
+           </v-col>
+           <v-col cols="9">
+           <v-text-field
+               type="number"
+               label="Amount"
+               v-model.number="amount"
+           ></v-text-field>
+           </v-col>
 
-          <v-col cols="3" class="d-flex align-center">
-            <p class="fs-normal greyBold--text mb-0">Status</p>
-          </v-col>
-          <v-col cols="9">
+            <v-col cols="3" class="d-flex align-center">
+                <p class="fs-normal greyBold--text mb-0">Status</p>
+            </v-col>
+            <v-col cols="9">
             <v-radio-group v-model="status" row>
-              <v-col cols="12" sm="4" md="4">
-                <v-radio label="in cart" value="in cart"></v-radio>
-              </v-col>
 
-              <v-col cols="12" sm="4" md="4">
-                <v-radio label="bought" value="bought"></v-radio>
-              </v-col>
+                <v-col cols="12" sm="4" md="4">
+                  <v-radio
+                    label="in cart"
+                    value="in cart"
+                  ></v-radio>
+                </v-col>
+
+                <v-col cols="12" sm="4" md="4">
+                  <v-radio
+                    label="bought"
+                    value="bought"
+                  ></v-radio>
+                </v-col>
+
             </v-radio-group>
-          </v-col>
+           </v-col>
 
-          <v-col cols="12 mt-5">
-            <v-btn type="submit" color="primary" :loading="loading">
-              Save
-            </v-btn>
+              <v-col cols="12 mt-5">
+                <v-btn
+                    type="submit"
+                    color="primary"
+                    :loading="loading"
+                >
+                    Save
+                </v-btn>
 
-            <v-btn @click="formatData" class="ml-2"> Reset </v-btn>
+                <v-btn @click="formatData" class="ml-2">
+                    Reset
+                </v-btn>
 
-            <router-link :to="cancelUrl" class="text-decoration-none">
-              <v-btn type="button" class="ml-2"> Cancel </v-btn>
-            </router-link>
-          </v-col>
-        </v-row>
-      </div>
-    </form>
-  </v-card>
+                <router-link :to="cancelUrl" class="text-decoration-none">
+<v-btn
+        type="button"
+        class="ml-2"
+>
+    Cancel
+</v-btn>
+</router-link>
+              </v-col>
+            </v-row>
+         </div>
+      </form>
+    </v-card>
 </template>
 <script>
-  import { mapState, mapActions, mapMutations } from 'vuex';
-  import dataFormatter from '@/use/dataFormatter.js';
-  import ImageUploader from '@/components/Uploaders/ImageUploader';
-  import FileUploader from '@/components/Uploaders/FileUploader';
+import { mapState, mapActions, mapMutations } from 'vuex'
+import dataFormatter from '@/use/dataFormatter.js'
+import ImageUploader from '@/components/Uploaders/ImageUploader'
+import FileUploader from '@/components/Uploaders/FileUploader'
 
-  export default {
-    data() {
+export default {
+    data () {
       return {
+
         orderDate: '',
 
         product: '',
@@ -105,122 +122,123 @@
         amount: '',
 
         status: false,
-      };
-    },
-    computed: {
-      ...mapState({
-        data: (state) => state.ordersForm.data,
-        loading: (state) => state.ordersForm.loading,
 
-        optionsProduct: (state) => state.ordersForm.searchResultProduct,
+    }
+  },
+  computed: {
+    ...mapState({
+        data: state => state.ordersForm.data,
+        loading: state => state.ordersForm.loading,
 
-        optionsUser: (state) => state.ordersForm.searchResultUser,
-      }),
+        optionsProduct: state => state.ordersForm.searchResultProduct,
 
-      currentOrderDate: {
+        optionsUser: state => state.ordersForm.searchResultUser,
+
+    }),
+
+    currentOrderDate: {
         get() {
-          return dataFormatter.dateTimeFormatter(this.orderDate);
+            return dataFormatter.dateTimeFormatter(this.orderDate)
         },
         set(val) {
-          this.orderDate = val;
-        },
-      },
-
-      cancelUrl() {
-        return (
-          '/' + this.$route.fullPath.split('/').slice(1).splice(0, 2).join('/')
-        );
-      },
-      dataFormatter() {
-        return dataFormatter;
-      },
+            this.orderDate = val
+        }
     },
+
+    cancelUrl() {
+        return '/' + this.$route.fullPath
+            .split('/')
+            .slice(1)
+            .splice(0, 2)
+            .join('/')
+    },
+    dataFormatter() {
+        return dataFormatter
+    }
+   },
     methods: {
-      ...mapMutations({
+    ...mapMutations({
         showSnackbar: 'snackbar/showSnackbar',
-      }),
-      ...mapActions({
+    }),
+    ...mapActions({
         getData: 'ordersForm/getData',
 
         searchProduct: 'ordersForm/searchProduct',
 
         searchUser: 'ordersForm/searchUser',
 
-        edit: 'ordersForm/edit',
-      }),
-      async submitHandler() {
-        const data = this.data;
+        edit: 'ordersForm/edit'
+    }),
+    async submitHandler() {
+        const data = this.data
 
-        data.orderDate = this.orderDate;
+        data.orderDate = this.orderDate
 
-        data.product = this.product;
+        data.product = this.product
 
-        data.user = this.user;
+        data.user = this.user
 
-        data.amount = this.amount;
+        data.amount = this.amount
 
-        data.status = this.status;
+        data.status = this.status
 
-        const productEl = this.optionsProduct.filter(
-          (i) => i.label === this.product,
-        );
-        data.product = productEl.length ? productEl[0].id : null;
+                const productEl = this.optionsProduct.filter(i => i.label === this.product)
+                data.product = productEl.length ? productEl[0].id : null
 
-        const userEl = this.optionsUser.filter((i) => i.label === this.user);
-        data.user = userEl.length ? userEl[0].id : null;
+                const userEl = this.optionsUser.filter(i => i.label === this.user)
+                data.user = userEl.length ? userEl[0].id : null
 
         try {
-          await this.edit({ id: this.id, data });
-          this.$router.push('/admin/orders');
-        } catch (e) {
-          this.showSnackbar(e);
+            await this.edit({id: this.id, data})
+            this.$router.push('/admin/orders')
+         } catch (e) {
+            this.showSnackbar(e)
         }
-      },
-
-      formatData() {
-        this.orderDate = this.data.orderDate;
-
-        this.product = dataFormatter.productsOneListFormatter(
-          this.data.product,
-        );
-
-        this.user = dataFormatter.usersOneListFormatter(this.data.user);
-
-        this.amount = this.data.amount;
-
-        this.status = this.data.status;
-      },
     },
+
+        formatData() {
+
+            this.orderDate = this.data.orderDate
+
+            this.product = dataFormatter.productsOneListFormatter(this.data.product)
+
+            this.user = dataFormatter.usersOneListFormatter(this.data.user)
+
+            this.amount = this.data.amount
+
+            this.status = this.data.status
+
+        }
+     },
     async beforeMount() {
-      try {
-        await this.searchProduct();
+        try {
 
-        await this.searchUser();
+                await this.searchProduct()
 
-        const pathArray = this.$route.fullPath.split('/');
-        const id = pathArray[pathArray.length - 2];
-        this.id = id;
-        await this.getData(id);
+                await this.searchUser()
 
-        this.formatData();
-      } catch (e) {
-        this.showSnackbar(e);
-      }
+            const pathArray = this.$route.fullPath.split('/')
+            const id = pathArray[pathArray.length - 2]
+            this.id = id
+            await this.getData(id)
+
+            this.formatData()
+        } catch (e) {
+            this.showSnackbar(e)
+        }
     },
     watch: {
-      async searchModelProduct() {
-        await this.searchProduct(this.searchModelProduct);
-      },
 
-      async searchModelUser() {
-        await this.searchUser(this.searchModelUser);
-      },
+        async searchModelProduct() {
+            await this.searchProduct(this.searchModelProduct)
+        },
+
+        async searchModelUser() {
+            await this.searchUser(this.searchModelUser)
+        },
+
     },
-    components: {
-      ImageUploader,
-      FileUploader,
-      VDatetimePicker: () =>
-        import('vuetify-datetime-picker/src/components/DatetimePicker.vue'),
-    },
-  };
+    components: {ImageUploader, FileUploader, VDatetimePicker: () => import('vuetify-datetime-picker/src/components/DatetimePicker.vue')}
+}
 </script>
+
