@@ -19,7 +19,7 @@
 
             <ImageUploader
                 label="Image"
-                id="1D5E0-D0F3-805A-E4BF"
+                id="AF873-B1CF-71EE-1B5D"
                 url="products/image"
                 :images="image"
                 @change="imageAdd"
